@@ -105,17 +105,31 @@ Response
 }
 
 Project Structure
-app/
-├── Http/
-│   └── Controllers/
-│       └── TriageController.php
-├── Models/
-│   └── TriageRecord.php
-routes/
-├── api.php
-resources/
-└── views/
-    └── triage.blade.php
+ai-medical-triage/
+├── app/
+│   ├── Http/
+│   │   └── Controllers/
+│   │       └── TriageController.php
+│   ├── Models/
+│   │   └── TriageRecord.php
+│
+├── routes/
+│   └── api.php
+│
+├── resources/
+│   └── views/
+│       └── triage.blade.php
+│
+├── database/
+│   └── migrations/
+│       └── ****_create_triage_records_table.php
+│
+├── public/
+│   └── index.php
+│
+├── composer.json
+└── README.md
+
 
 How It Works
 
