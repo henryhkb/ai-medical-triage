@@ -598,7 +598,13 @@ $('history-list').addEventListener('click', e => {
     const b = e.target.closest('.history-row');
     if (!b) return;
     const rec = historyCache.records.find(r => r.id === +b.dataset.id);
-    if (rec) { showTab('assess'); renderResult(rec, { saved: true }); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    if (rec) {
+        const p = rec.patient || {};
+        fillExample({ symptoms: rec.symptoms, age: p.age, sex: p.sex, duration: p.duration, conditions: p.conditions });
+        showTab('assess');
+        renderResult(rec, { saved: true });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 });
 
 renderEmpty();

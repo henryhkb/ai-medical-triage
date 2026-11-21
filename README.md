@@ -4,7 +4,9 @@ TriageIQ is a Laravel web app and REST API that rates how urgent a patient's sym
 
 > **Not medical advice.** TriageIQ is a demonstration and research prototype. It assesses urgency; it does not diagnose, and it does not replace a qualified clinician. In an emergency, call your local emergency number.
 
-![TriageIQ assessment report](docs/screenshots/assessment.png)
+**[Watch the 75-second demo on YouTube](https://www.youtube.com/watch?v=CBgPx7iSCyI)**
+
+[![TriageIQ assessment report. Click to watch the demo video](docs/screenshots/assessment.png)](https://www.youtube.com/watch?v=CBgPx7iSCyI)
 
 ## Features
 
