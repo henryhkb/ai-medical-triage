@@ -6,6 +6,14 @@ A simple frontend interface is included for testing and demonstration purposes.
 
 Features
 
+TriageIQ web UI at / : symptom form, one-click example cases, optional patient details (age, sex, duration, conditions)
+
+Rich assessment: urgency, recommended next step, possible causes, red-flag warnings, self-care tips, AI confidence
+
+History tab with urgency stats and saved assessments you can reopen
+
+Copy summary and print actions
+
 Symptom analysis using LLMs (Groq API)
 
 Returns structured JSON: severity, advice, reason
@@ -26,7 +34,7 @@ PHP 8.4
 
 MySQL
 
-Groq API (Llama-3.3 models)
+Groq API (openai/gpt-oss-120b by default, set with GROQ_MODEL)
 
 TailwindCSS
 
@@ -46,14 +54,17 @@ cp .env.example .env
 4. Generate application key
 php artisan key:generate
 
-5. Configure the database
+5. Configure the database (create it first)
+
+mysql -u root -p -e "CREATE DATABASE medical_triage_api"
+
 
 Edit your .env:
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=ai_triage
+DB_DATABASE=medical_triage_api
 DB_USERNAME=root
 DB_PASSWORD=yourpassword
 
@@ -67,9 +78,9 @@ php artisan migrate
 php artisan serve
 
 
-The application will be available at:
+The UI is available at:
 
-http://localhost:8000
+http://localhost:8000/triage-ui
 
 API Documentation
 Endpoint: POST /api/triage
@@ -78,7 +89,11 @@ Analyzes patient symptoms and returns structured medical guidance.
 
 Request Body
 {
-  "symptoms": "string"
+  "symptoms": "string (required, max 2000)",
+  "age": 45,                      // optional, 0-120
+  "sex": "female|male|other",     // optional
+  "duration": "1–24 hours",       // optional
+  "conditions": "diabetes"        // optional
 }
 
 Example
@@ -90,12 +105,14 @@ Response
 {
   "record": {
       "id": 12,
+      "user_id": null,
       "symptoms": "...",
       "severity": "emergency",
       "advice": "Seek immediate medical attention...",
       "reason": "...",
-      "created_at": "2025-11-26",
-      "updated_at": "2025-11-26"
+      "analysis": "{ raw model JSON }",
+      "created_at": "2025-11-26T21:00:00.000000Z",
+      "updated_at": "2025-11-26T21:00:00.000000Z"
   },
   "ai": {
       "severity": "emergency",
@@ -103,6 +120,14 @@ Response
       "reason": "..."
   }
 }
+
+severity is always one of: low, medium, emergency, unknown.
+The endpoint is rate limited to 20 requests per minute per client.
+
+Endpoint: GET /api/triage/history
+
+Returns urgency counts and the 50 most recent assessments:
+{ "stats": { "total", "emergency", "medium", "low" }, "records": [ ... ] }
 
 Project Structure
 ai-medical-triage/

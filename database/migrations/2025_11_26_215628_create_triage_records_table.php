@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable(); // if logged in
             $table->text('symptoms');
-            $table->text('analysis');
-            $table->string('severity'); // low / medium / emergency
+            $table->string('severity'); // low / medium / emergency / unknown
+            $table->text('advice')->nullable();
+            $table->text('reason')->nullable();
+            $table->text('analysis'); // raw model output
             $table->timestamps();
         });
     }
